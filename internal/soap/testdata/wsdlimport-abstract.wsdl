@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://example.com/echo/abstract"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://example.com/echo/abstract">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://example.com/echo/abstract" elementFormDefault="qualified">
+      <xs:element name="Echo">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="text" type="xs:string"/>
+            <xs:element name="repeat" type="xs:int" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="EchoResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="text" type="xs:string" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="EchoIn"><wsdl:part name="parameters" element="tns:Echo"/></wsdl:message>
+  <wsdl:message name="EchoOut"><wsdl:part name="parameters" element="tns:EchoResponse"/></wsdl:message>
+  <wsdl:portType name="EchoPortType">
+    <wsdl:operation name="Echo">
+      <wsdl:input message="tns:EchoIn"/>
+      <wsdl:output message="tns:EchoOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

@@ -1,0 +1,134 @@
+{
+  "name": "WeatherService",
+  "target_namespace": "http://example.com/weather/wsdl",
+  "documents": [
+    "testdata/weather.wsdl"
+  ],
+  "services": [
+    {
+      "name": "WeatherService",
+      "documentation": "Toy weather service.",
+      "ports": [
+        {
+          "name": "WeatherSoap",
+          "binding": "WeatherSoap",
+          "soap_version": "1.1",
+          "style": "document",
+          "transport": "http://schemas.xmlsoap.org/soap/http",
+          "address": "http://localhost/weather",
+          "operations": [
+            {
+              "name": "GetForecast",
+              "soap_action": "http://example.com/weather/GetForecast",
+              "style": "document",
+              "input_use": "literal",
+              "output_use": "literal"
+            }
+          ]
+        },
+        {
+          "name": "WeatherSoap12",
+          "binding": "WeatherSoap12",
+          "soap_version": "1.2",
+          "style": "document",
+          "transport": "http://schemas.xmlsoap.org/soap/http",
+          "address": "http://localhost/weather12",
+          "operations": [
+            {
+              "name": "GetForecast",
+              "soap_action": "http://example.com/weather/GetForecast",
+              "style": "document",
+              "input_use": "literal",
+              "output_use": "literal"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "operation": {
+    "name": "GetForecast",
+    "documentation": "Returns a multi-day forecast for a city or ZIP code.",
+    "service": "WeatherService",
+    "port": "WeatherSoap",
+    "endpoint": "http://localhost/weather",
+    "soap_version": "1.1",
+    "soap_action": "http://example.com/weather/GetForecast",
+    "style": "document",
+    "wrapped": true,
+    "other_ports": [
+      "WeatherService/WeatherSoap12 (SOAP 1.2)"
+    ],
+    "input": {
+      "message": "{http://example.com/weather/wsdl}GetForecastRequest",
+      "use": "literal",
+      "parts": [
+        {
+          "name": "parameters",
+          "element": "{http://example.com/weather}GetForecast"
+        }
+      ],
+      "shape": {
+        "GetForecast": {
+          "city?": "string",
+          "zip?": "string",
+          "#choice": "one of: city | zip",
+          "days?": "integer",
+          "units?": "enum: metric | imperial",
+          "include?": [
+            "string"
+          ]
+        }
+      }
+    },
+    "output": {
+      "message": "{http://example.com/weather/wsdl}GetForecastResponse",
+      "use": "literal",
+      "parts": [
+        {
+          "name": "parameters",
+          "element": "{http://example.com/weather}GetForecastResponse"
+        }
+      ],
+      "shape": {
+        "GetForecastResponse": {
+          "location": {
+            "@id?": "integer",
+            "name": "string",
+            "country?": "string",
+            "lat": "number",
+            "lon": "number"
+          },
+          "day?": [
+            {
+              "date": "string:date",
+              "high": {
+                "@unit": "enum: metric | imperial",
+                "#text": "number"
+              },
+              "low": {
+                "@unit": "enum: metric | imperial",
+                "#text": "number"
+              },
+              "summary": "string | null",
+              "rainy?": "boolean"
+            }
+          ]
+        }
+      }
+    },
+    "faults": [
+      {
+        "name": "ForecastFault",
+        "message": "{http://example.com/weather/wsdl}ForecastFault",
+        "detail": {
+          "ForecastFault": {
+            "code": "integer",
+            "message": "string"
+          }
+        }
+      }
+    ],
+    "args_hint": "args: the content of GetForecast (or the whole input shape); keys ending in '?' are optional, '@x' are attributes"
+  }
+}

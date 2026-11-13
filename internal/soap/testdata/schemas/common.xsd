@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- chameleon include: no targetNamespace -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="OrderLine">
+    <xs:sequence>
+      <xs:element name="sku" type="xs:string"/>
+      <xs:element name="qty" type="xs:positiveInteger"/>
+      <xs:element name="tags" type="TagList" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="TagList">
+    <xs:list itemType="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="Status">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ACCEPTED"/>
+      <xs:enumeration value="REJECTED"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:attributeGroup name="Tracking">
+    <xs:attribute name="requestId" type="xs:string" use="required"/>
+    <xs:attribute name="priority" type="xs:int"/>
+  </xs:attributeGroup>
+</xs:schema>

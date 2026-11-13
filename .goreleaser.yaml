@@ -1,0 +1,48 @@
+# goreleaser v2 configuration: static, pure-Go binaries for six platforms.
+version: 2
+project_name: netkit-mcp
+
+before:
+  hooks:
+    - go mod download
+
+builds:
+  - id: netkit-mcp
+    main: .
+    binary: netkit-mcp
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X github.com/HamedFathi/NetKitMCP/internal/config.Version={{ .Version }}
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+
+archives:
+  - id: default
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - README.md
+      - LICENSE*
+
+checksum:
+  name_template: checksums.txt
+
+dockers_v2:
+  - id: image
+    images:
+      - "ghcr.io/hamedfathi/netkitmcp"
+    tags:
+      - "{{ .Version }}"
+      - latest
+    dockerfile: Dockerfile.goreleaser
+    platforms:
+      - linux/amd64
+      - linux/arm64
+
+changelog:
+  sort: asc

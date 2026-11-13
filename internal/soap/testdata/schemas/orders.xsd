@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://example.com/orders" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:o="http://example.com/orders" elementFormDefault="unqualified">
+  <xs:include schemaLocation="common.xsd"/>
+  <xs:element name="PlaceOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="customer" type="xs:string"/>
+        <xs:element name="line" type="o:OrderLine" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="o:Tracking"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PlaceOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="orderId" type="xs:long"/>
+        <xs:element name="status" type="o:Status"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

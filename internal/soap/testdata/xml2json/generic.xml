@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soapenv:Body>
+    <ns:Result xmlns:ns="urn:generic" version="2">
+      <ns:item code="A">first</ns:item>
+      <ns:item code="B">second</ns:item>
+      <ns:empty/>
+      <ns:missing xsi:nil="true"/>
+      <ns:count>7</ns:count>
+      <ns:note>Hello <ns:b>bold</ns:b> world</ns:note>
+      <other:x xmlns:other="urn:other"><other:y>1</other:y><other:y>2</other:y></other:x>
+    </ns:Result>
+  </soapenv:Body>
+</soapenv:Envelope>

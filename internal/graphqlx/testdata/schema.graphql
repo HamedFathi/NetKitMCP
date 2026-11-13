@@ -1,0 +1,52 @@
+directive @cacheControl(maxAge: Int = 0) on FIELD_DEFINITION | OBJECT
+
+type Query {
+  node(id: ID!): Node
+  users(first: Int = 10, role: Role = USER, filter: UserFilter = {active: true}): [User!]!
+  search(term: String!): [SearchResult]
+  legacyUsers: [User] @deprecated(reason: "Use `users`.")
+}
+
+type Mutation {
+  uploadAvatar(userId: ID!, file: Upload!): Boolean!
+}
+
+type Subscription {
+  userCreated: User!
+}
+
+interface Node {
+  id: ID!
+}
+
+type User implements Node {
+  id: ID!
+  name: String
+  role: Role!
+  createdAt: DateTime
+  posts(last: Int = 5): [Post]
+  email: String @deprecated
+}
+
+type Post implements Node {
+  id: ID!
+  title: String!
+}
+
+union SearchResult = User | Post
+
+enum Role {
+  ADMIN
+  USER
+  GUEST @deprecated(reason: "Guests were removed.")
+}
+
+input UserFilter {
+  active: Boolean = true
+  nameContains: String
+  roles: [Role!] = [ADMIN, USER]
+}
+
+scalar DateTime @specifiedBy(url: "https://scalars.graphql.org/andimarek/date-time")
+
+scalar Upload

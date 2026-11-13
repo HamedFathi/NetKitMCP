@@ -1,0 +1,28 @@
+{
+  "Result": {
+    "@version": "2",
+    "item": [
+      {
+        "@code": "A",
+        "#text": "first"
+      },
+      {
+        "@code": "B",
+        "#text": "second"
+      }
+    ],
+    "empty": "",
+    "missing": null,
+    "count": "7",
+    "note": {
+      "b": "bold",
+      "#text": "Hello world"
+    },
+    "x": {
+      "y": [
+        "1",
+        "2"
+      ]
+    }
+  }
+}

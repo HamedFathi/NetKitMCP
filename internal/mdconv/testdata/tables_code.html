@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Widget API Reference</title>
+  <style>body { font-family: sans-serif; }</style>
+  <script>window.analytics = { track: function () {} };</script>
+</head>
+<body>
+  <nav><a href="/">Home</a> | <a href="/docs/">Docs</a></nav>
+  <h1>Widget API</h1>
+  <p>See the <a href="../guide/intro.html">introduction</a>, the <a href="/changelog">changelog</a>,
+     this <a href="#errors">section</a>, a <a href="?page=2">next page</a> and
+     <a href="javascript:void(0)">a fake link</a>.</p>
+  <p><img src="img/diagram.png" alt="Architecture diagram"> Inline <code>widget.New()</code> call.</p>
+
+  <h2>Endpoints</h2>
+  <table>
+    <thead>
+      <tr><th>Method</th><th>Path</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>GET</td><td><code>/widgets</code></td><td>List widgets</td></tr>
+      <tr><td>POST</td><td><code>/widgets</code></td><td>Create a widget | with pipe</td></tr>
+      <tr><td>DELETE</td><td><code>/widgets/{id}</code></td><td><strong>Removes</strong> a widget</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Examples</h2>
+  <pre><code class="language-go">package main
+
+func main() {
+	fmt.Println("hi &lt;there&gt;")
+}</code></pre>
+
+  <div class="highlight highlight-source-python"><pre><span class="k">def</span> <span class="nf">add</span>(a, b):
+    <span class="k">return</span> a + b</pre></div>
+
+  <pre data-lang="bash">curl -s https://api.example.com/widgets</pre>
+
+  <pre>no language here</pre>
+
+  <h2 id="errors">Errors</h2>
+  <ul>
+    <li><del>404</del> 410 when gone</li>
+    <li>429 when rate limited</li>
+  </ul>
+  <form><input type="text" name="q"><button>Search</button></form>
+</body>
+</html>

@@ -1,0 +1,5 @@
+*.test
+*.out
+
+# GoReleaser output (release binaries are published by CI to GitHub Releases)
+dist/

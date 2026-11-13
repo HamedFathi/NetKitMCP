@@ -1,0 +1,30 @@
+{
+  "body": {
+    "GetForecastResponse": {
+      "location": {
+        "@id": 42,
+        "name": "Amsterdam",
+        "lat": 52.37,
+        "lon": 4.89
+      },
+      "day": [
+        {
+          "date": "2026-11-10",
+          "high": {
+            "@unit": "metric",
+            "#text": 11.5
+          },
+          "low": {
+            "@unit": "metric",
+            "#text": 4
+          },
+          "summary": null,
+          "rainy": true
+        }
+      ]
+    }
+  },
+  "header": {
+    "Trace": "abc-123"
+  }
+}

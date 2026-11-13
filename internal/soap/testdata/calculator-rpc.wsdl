@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- rpc/literal, SOAP 1.1, type= parts -->
+<definitions name="Calculator"
+    targetNamespace="http://example.com/calc/wsdl"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://example.com/calc/wsdl"
+    xmlns:t="http://example.com/calc/types">
+  <types>
+    <xsd:schema targetNamespace="http://example.com/calc/types">
+      <xsd:complexType name="Numbers">
+        <xsd:sequence>
+          <xsd:element name="item" type="xsd:int" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+  <message name="AddRequest">
+    <part name="a" type="xsd:int"/>
+    <part name="b" type="xsd:int"/>
+  </message>
+  <message name="AddResponse">
+    <part name="result" type="xsd:int"/>
+  </message>
+  <message name="SumRequest">
+    <part name="numbers" type="t:Numbers"/>
+  </message>
+  <message name="SumResponse">
+    <part name="total" type="xsd:long"/>
+  </message>
+  <portType name="CalculatorPortType">
+    <operation name="Add">
+      <input message="tns:AddRequest"/>
+      <output message="tns:AddResponse"/>
+    </operation>
+    <operation name="Sum">
+      <input message="tns:SumRequest"/>
+      <output message="tns:SumResponse"/>
+    </operation>
+  </portType>
+  <binding name="CalculatorBinding" type="tns:CalculatorPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="Add">
+      <soap:operation soapAction="urn:calc#Add"/>
+      <input><soap:body use="literal" namespace="http://example.com/calc"/></input>
+      <output><soap:body use="literal" namespace="http://example.com/calc"/></output>
+    </operation>
+    <operation name="Sum">
+      <soap:operation soapAction="urn:calc#Sum"/>
+      <input><soap:body use="literal" namespace="http://example.com/calc"/></input>
+      <output><soap:body use="literal" namespace="http://example.com/calc"/></output>
+    </operation>
+  </binding>
+  <service name="CalculatorService">
+    <port name="CalculatorPort" binding="tns:CalculatorBinding">
+      <soap:address location="http://localhost/calc"/>
+    </port>
+  </service>
+</definitions>

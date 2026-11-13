@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tuning Go Garbage Collection | The Gopher Gazette</title>
+  <meta property="og:site_name" content="The Gopher Gazette">
+  <meta name="author" content="Ada Lovelace">
+  <meta property="article:published_time" content="2026-03-14T09:30:00Z">
+  <meta name="description" content="A practical guide to GOGC and GOMEMLIMIT.">
+</head>
+<body>
+  <div id="onetrust-consent-sdk"><p>We use cookies. <a href="/privacy">Privacy policy</a></p></div>
+  <div class="cookie-consent-banner"><p>This site uses cookies to improve your experience.</p><button>Accept all</button></div>
+  <header class="site-header">
+    <a href="/" class="logo">The Gopher Gazette</a>
+    <nav><ul><li><a href="/news">News</a></li><li><a href="/tutorials">Tutorials</a></li><li><a href="/about">About</a></li></ul></nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Popular posts</h3>
+      <ul><li><a href="/p/1">Ten Go tips</a></li><li><a href="/p/2">Generics in depth</a></li><li><a href="/p/3">Channels explained</a></li></ul>
+    </aside>
+    <main>
+      <article class="post">
+        <h1>Tuning Go Garbage Collection</h1>
+        <p class="byline">By Ada Lovelace</p>
+        <div class="post-body">
+          <p>The Go runtime ships with a concurrent, tri-color mark and sweep garbage collector. For most services the defaults are fine, but memory-heavy workloads can benefit from tuning two knobs: <code>GOGC</code> and <code>GOMEMLIMIT</code>. This article explains what each one does and how they interact in production systems.</p>
+          <p>The <code>GOGC</code> variable sets the target heap growth between collections as a percentage. With the default value of 100, the collector aims to start a new cycle when the live heap has doubled. Raising it trades memory for CPU time; lowering it does the opposite and makes the collector run more often.</p>
+          <h2>Setting a memory limit</h2>
+          <p>Since Go 1.19 the <code>GOMEMLIMIT</code> variable provides a soft memory limit. When the total memory used by the runtime approaches the limit, the collector runs more aggressively regardless of <code>GOGC</code>. Read the <a href="/docs/gc-guide">official GC guide</a> for the details and the <a href="https://go.dev/doc/gc-guide#Memory_limit">memory limit section</a> in particular.</p>
+          <pre><code class="language-bash">GOGC=200 GOMEMLIMIT=2GiB ./server</code></pre>
+          <p>Measure before and after every change: tune with real traffic, watch pause times, and keep an eye on the resident set size reported by the operating system rather than only the Go heap statistics.</p>
+        </div>
+      </article>
+    </main>
+  </div>
+  <footer><p>&copy; 2026 The Gopher Gazette. <a href="/terms">Terms</a></p></footer>
+</body>
+</html>

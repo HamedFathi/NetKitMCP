@@ -1,0 +1,71 @@
+"Cache hints."
+directive @cacheControl(maxAge: Int = 0) on FIELD_DEFINITION | OBJECT
+
+"The root query."
+type Query {
+  "Fetch any node by ID."
+  node(
+    "Global ID."
+    id: ID!
+  ): Node
+  users(first: Int = 10, role: Role = USER, filter: UserFilter = {active: true}): [User!]!
+  search(term: String!): [SearchResult]
+  legacyUsers: [User] @deprecated(reason: "Use `users`.")
+}
+
+type Mutation {
+  uploadAvatar(userId: ID!, file: Upload!): Boolean!
+}
+
+type Subscription {
+  userCreated: User!
+}
+
+"An object with an ID."
+interface Node {
+  id: ID!
+}
+
+"""
+A person.
+Users can author posts.
+"""
+type User implements Node {
+  id: ID!
+  "Display name."
+  name: String
+  role: Role!
+  createdAt: DateTime
+  posts(
+    "How many."
+    last: Int = 5
+  ): [Post]
+  email: String @deprecated
+}
+
+type Post implements Node {
+  id: ID!
+  title: String!
+}
+
+union SearchResult = User | Post
+
+"Access level."
+enum Role {
+  "Full access."
+  ADMIN
+  USER
+  GUEST @deprecated(reason: "Guests were removed.")
+}
+
+input UserFilter {
+  active: Boolean = true
+  "Case-insensitive."
+  nameContains: String
+  roles: [Role!] = [ADMIN, USER]
+}
+
+"ISO-8601 timestamp."
+scalar DateTime @specifiedBy(url: "https://scalars.graphql.org/andimarek/date-time")
+
+scalar Upload

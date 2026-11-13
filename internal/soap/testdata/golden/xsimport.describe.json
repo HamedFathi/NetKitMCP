@@ -1,0 +1,57 @@
+{
+  "name": "Orders",
+  "target_namespace": "http://example.com/orders/wsdl",
+  "documents": [
+    "testdata/xsimport.wsdl",
+    "testdata/schemas/orders.xsd",
+    "testdata/schemas/common.xsd"
+  ],
+  "services": [
+    {
+      "name": "OrdersService",
+      "ports": [
+        {
+          "name": "OrdersPort",
+          "binding": "OrdersBinding",
+          "soap_version": "1.1",
+          "style": "document",
+          "transport": "http://schemas.xmlsoap.org/soap/http",
+          "address": "http://localhost/orders",
+          "operations": [
+            {
+              "name": "PlaceOrder",
+              "soap_action": "urn:PlaceOrder",
+              "style": "document",
+              "input_use": "literal",
+              "output_use": "literal"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "operations": {
+    "PlaceOrder": {
+      "input": {
+        "PlaceOrder": {
+          "@requestId": "string",
+          "@priority?": "integer",
+          "customer": "string",
+          "line": [
+            {
+              "sku": "string",
+              "qty": "integer",
+              "tags?": "list of string (space separated)"
+            }
+          ]
+        }
+      },
+      "output": {
+        "PlaceOrderResponse": {
+          "orderId": "integer",
+          "status": "enum: ACCEPTED | REJECTED"
+        }
+      }
+    }
+  }
+}

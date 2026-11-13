@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- types come from an external schema via xs:import (which xs:includes another) -->
+<wsdl:definitions name="Orders"
+    targetNamespace="http://example.com/orders/wsdl"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://example.com/orders/wsdl"
+    xmlns:o="http://example.com/orders">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://example.com/orders/wsdl">
+      <xs:import namespace="http://example.com/orders" schemaLocation="schemas/orders.xsd"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="PlaceOrderIn"><wsdl:part name="parameters" element="o:PlaceOrder"/></wsdl:message>
+  <wsdl:message name="PlaceOrderOut"><wsdl:part name="parameters" element="o:PlaceOrderResponse"/></wsdl:message>
+  <wsdl:portType name="OrdersPort">
+    <wsdl:operation name="PlaceOrder">
+      <wsdl:input message="tns:PlaceOrderIn"/>
+      <wsdl:output message="tns:PlaceOrderOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OrdersBinding" type="tns:OrdersPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="PlaceOrder">
+      <soap:operation soapAction="urn:PlaceOrder"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OrdersService">
+    <wsdl:port name="OrdersPort" binding="tns:OrdersBinding">
+      <soap:address location="http://localhost/orders"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

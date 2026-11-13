@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- document/literal wrapped, SOAP 1.1 and SOAP 1.2 ports -->
+<wsdl:definitions name="WeatherService"
+    targetNamespace="http://example.com/weather/wsdl"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://example.com/weather/wsdl"
+    xmlns:w="http://example.com/weather">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://example.com/weather" elementFormDefault="qualified">
+      <xs:simpleType name="Units">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="metric"/>
+          <xs:enumeration value="imperial"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="Place">
+        <xs:sequence>
+          <xs:element name="name" type="xs:string"/>
+          <xs:element name="country" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:int"/>
+      </xs:complexType>
+      <xs:complexType name="Location">
+        <xs:complexContent>
+          <xs:extension base="w:Place">
+            <xs:sequence>
+              <xs:element name="lat" type="xs:double"/>
+              <xs:element name="lon" type="xs:double"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="Temperature">
+        <xs:simpleContent>
+          <xs:extension base="xs:decimal">
+            <xs:attribute name="unit" type="w:Units" use="required"/>
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+      <xs:complexType name="Day">
+        <xs:all>
+          <xs:element name="date" type="xs:date"/>
+          <xs:element name="high" type="w:Temperature"/>
+          <xs:element name="low" type="w:Temperature"/>
+          <xs:element name="summary" type="xs:string" nillable="true"/>
+          <xs:element name="rainy" type="xs:boolean" minOccurs="0"/>
+        </xs:all>
+      </xs:complexType>
+      <xs:element name="GetForecast">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice>
+              <xs:element name="city" type="xs:string"/>
+              <xs:element name="zip" type="xs:string"/>
+            </xs:choice>
+            <xs:element name="days" type="xs:int" minOccurs="0"/>
+            <xs:element name="units" type="w:Units" minOccurs="0"/>
+            <xs:element name="include" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetForecastResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="location" type="w:Location"/>
+            <xs:element name="day" type="w:Day" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ForecastFault">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="code" type="xs:int"/>
+            <xs:element name="message" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+
+  <wsdl:message name="GetForecastRequest">
+    <wsdl:part name="parameters" element="w:GetForecast"/>
+  </wsdl:message>
+  <wsdl:message name="GetForecastResponse">
+    <wsdl:part name="parameters" element="w:GetForecastResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ForecastFault">
+    <wsdl:part name="fault" element="w:ForecastFault"/>
+  </wsdl:message>
+
+  <wsdl:portType name="WeatherPortType">
+    <wsdl:operation name="GetForecast">
+      <wsdl:documentation>Returns a multi-day forecast for a city or ZIP code.</wsdl:documentation>
+      <wsdl:input message="tns:GetForecastRequest"/>
+      <wsdl:output message="tns:GetForecastResponse"/>
+      <wsdl:fault name="ForecastFault" message="tns:ForecastFault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="WeatherSoap" type="tns:WeatherPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetForecast">
+      <soap:operation soapAction="http://example.com/weather/GetForecast"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+      <wsdl:fault name="ForecastFault"><soap:fault name="ForecastFault" use="literal"/></wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:binding name="WeatherSoap12" type="tns:WeatherPortType">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetForecast">
+      <soap12:operation soapAction="http://example.com/weather/GetForecast"/>
+      <wsdl:input><soap12:body use="literal"/></wsdl:input>
+      <wsdl:output><soap12:body use="literal"/></wsdl:output>
+      <wsdl:fault name="ForecastFault"><soap12:fault name="ForecastFault" use="literal"/></wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="WeatherService">
+    <wsdl:documentation>Toy weather service.</wsdl:documentation>
+    <wsdl:port name="WeatherSoap" binding="tns:WeatherSoap">
+      <soap:address location="http://localhost/weather"/>
+    </wsdl:port>
+    <wsdl:port name="WeatherSoap12" binding="tns:WeatherSoap12">
+      <soap12:address location="http://localhost/weather12"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soap:Header>
+    <t:Trace xmlns:t="urn:trace">abc-123</t:Trace>
+  </soap:Header>
+  <soap:Body>
+    <w:GetForecastResponse xmlns:w="http://example.com/weather">
+      <w:location id="42">
+        <w:name>Amsterdam</w:name>
+        <w:lat>52.37</w:lat>
+        <w:lon>4.89</w:lon>
+      </w:location>
+      <w:day>
+        <w:date>2026-11-10</w:date>
+        <w:high unit="metric">11.5</w:high>
+        <w:low unit="metric">4</w:low>
+        <w:summary xsi:nil="true"/>
+        <w:rainy>true</w:rainy>
+      </w:day>
+    </w:GetForecastResponse>
+  </soap:Body>
+</soap:Envelope>

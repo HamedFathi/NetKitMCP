@@ -1,0 +1,76 @@
+{
+  "name": "Echo",
+  "target_namespace": "http://example.com/echo/service",
+  "documents": [
+    "testdata/wsdlimport.wsdl",
+    "testdata/wsdlimport-abstract.wsdl"
+  ],
+  "services": [
+    {
+      "name": "EchoService",
+      "ports": [
+        {
+          "name": "EchoPort",
+          "binding": "EchoBinding12",
+          "soap_version": "1.2",
+          "style": "document",
+          "transport": "http://schemas.xmlsoap.org/soap/http",
+          "address": "http://localhost/echo",
+          "operations": [
+            {
+              "name": "Echo",
+              "soap_action": "urn:echo",
+              "style": "document",
+              "input_use": "literal",
+              "output_use": "literal"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "operation": {
+    "name": "Echo",
+    "service": "EchoService",
+    "port": "EchoPort",
+    "endpoint": "http://localhost/echo",
+    "soap_version": "1.2",
+    "soap_action": "urn:echo",
+    "style": "document",
+    "wrapped": true,
+    "input": {
+      "message": "{http://example.com/echo/abstract}EchoIn",
+      "use": "literal",
+      "parts": [
+        {
+          "name": "parameters",
+          "element": "{http://example.com/echo/abstract}Echo"
+        }
+      ],
+      "shape": {
+        "Echo": {
+          "text": "string",
+          "repeat?": "integer"
+        }
+      }
+    },
+    "output": {
+      "message": "{http://example.com/echo/abstract}EchoOut",
+      "use": "literal",
+      "parts": [
+        {
+          "name": "parameters",
+          "element": "{http://example.com/echo/abstract}EchoResponse"
+        }
+      ],
+      "shape": {
+        "EchoResponse": {
+          "text": [
+            "string"
+          ]
+        }
+      }
+    },
+    "args_hint": "args: the content of Echo (or the whole input shape); keys ending in '?' are optional, '@x' are attributes"
+  }
+}

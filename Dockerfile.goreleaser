@@ -1,0 +1,7 @@
+FROM gcr.io/distroless/static-debian12:nonroot
+ARG TARGETPLATFORM
+COPY ${TARGETPLATFORM}/netkit-mcp /netkit-mcp
+VOLUME ["/data/in", "/data/out"]
+ENV NETKIT_ALLOW_READ_DIR=/data/in NETKIT_ALLOW_WRITE_DIR=/data/out
+EXPOSE 8080
+ENTRYPOINT ["/netkit-mcp"]

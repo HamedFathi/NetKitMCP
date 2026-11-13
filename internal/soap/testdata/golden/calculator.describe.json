@@ -1,0 +1,69 @@
+{
+  "name": "Calculator",
+  "target_namespace": "http://example.com/calc/wsdl",
+  "documents": [
+    "testdata/calculator-rpc.wsdl"
+  ],
+  "services": [
+    {
+      "name": "CalculatorService",
+      "ports": [
+        {
+          "name": "CalculatorPort",
+          "binding": "CalculatorBinding",
+          "soap_version": "1.1",
+          "style": "rpc",
+          "transport": "http://schemas.xmlsoap.org/soap/http",
+          "address": "http://localhost/calc",
+          "operations": [
+            {
+              "name": "Add",
+              "soap_action": "urn:calc#Add",
+              "style": "rpc",
+              "input_use": "literal",
+              "output_use": "literal"
+            },
+            {
+              "name": "Sum",
+              "soap_action": "urn:calc#Sum",
+              "style": "rpc",
+              "input_use": "literal",
+              "output_use": "literal"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "operations": {
+    "Add": {
+      "input": {
+        "Add": {
+          "a": "integer",
+          "b": "integer"
+        }
+      },
+      "output": {
+        "AddResponse": {
+          "result": "integer"
+        }
+      }
+    },
+    "Sum": {
+      "input": {
+        "Sum": {
+          "numbers": {
+            "item": [
+              "integer"
+            ]
+          }
+        }
+      },
+      "output": {
+        "SumResponse": {
+          "total": "integer"
+        }
+      }
+    }
+  }
+}
